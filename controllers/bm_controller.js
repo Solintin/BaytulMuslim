@@ -38,6 +38,30 @@ const uploadLecture = asyncHandler(async (req, res) => {
   });
 });
 
+//@desc     Get a lecture
+//route     GET /api/lectures/:id
+//access    Public
+const getSingleLecture = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const getLecture = await Lecture.findById(id);
+
+  console.log(id);
+  if (!getLecture) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: "Lecture not found" });
+  }
+
+  return res
+    .status(StatusCodes.OK)
+    .json({ Message: `Lecture Retrieved Successfully`, getLecture });
+});
+
+
+
+
+
+
 //@desc     Edit a lecture
 //route     PUT /api/lectures/:id
 //access    Public
@@ -85,4 +109,4 @@ const deletetLecture = asyncHandler(async (req, res) => {
   res.status(StatusCodes.OK).json({ Message: `Lecture Deleted Successfully` });
 });
 
-module.exports = { getLectures, uploadLecture, editLecture, deletetLecture };
+module.exports = { getLectures, uploadLecture, getSingleLecture, editLecture, deletetLecture };
