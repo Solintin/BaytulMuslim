@@ -5,21 +5,21 @@ const asyncHandler = require("express-async-handler");
 //route     GET /api/lecture
 //access    Public
 const getLectures = asyncHandler(async (req, res) => {
-  const Lectures = await Lecture.find({});
+  const lectures = await Lecture.find({});
 
   return res
     .status(StatusCodes.OK)
-    .json({ Message: "Lectures retrieved successfully", Lectures });
+    .json({ message: "Lectures retrieved successfully", lectures });
 });
 
 //@desc     Upload a lecture
 //route     POST /api/lecture
 //access    Public
 const uploadLecture = asyncHandler(async (req, res) => {
-  const { title, src, tags, language, artist } = req.body;
+  const { title, src, tags, language, artist, lectureId } = req.body;
 
   console.log(req.body);
-  if (!title || !src || !tags || !language || !artist) {
+  if (!title || !src || !tags || !language || !artist || !lectureId) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: "All parameters are required" });
@@ -30,11 +30,12 @@ const uploadLecture = asyncHandler(async (req, res) => {
     tags: tags,
     language,
     artist,
+    lectureId
   });
 
   return res.status(StatusCodes.OK).json({
-    Message: "lecture uploaded successfully",
-    Lecture: uploadedLecture,
+    message: "lecture uploaded successfully",
+    lecture: uploadedLecture,
   });
 });
 
@@ -54,13 +55,8 @@ const getSingleLecture = asyncHandler(async (req, res) => {
 
   return res
     .status(StatusCodes.OK)
-    .json({ Message: `Lecture Retrieved Successfully`, getLecture });
+    .json({ message: `Lecture Retrieved Successfully`, getLecture });
 });
-
-
-
-
-
 
 //@desc     Edit a lecture
 //route     PUT /api/lectures/:id
@@ -90,7 +86,7 @@ const editLecture = asyncHandler(async (req, res) => {
   );
   return res
     .status(StatusCodes.OK)
-    .json({ Message: `Lecture Updated Successfully`, updatedLecture });
+    .json({ message: `Lecture Updated Successfully`, updatedLecture });
 });
 
 //@desc     Delete a lecture
@@ -106,7 +102,13 @@ const deletetLecture = asyncHandler(async (req, res) => {
       .json({ error: "Lecture not found" });
   }
   await Lecture.findByIdAndDelete(id);
-  res.status(StatusCodes.OK).json({ Message: `Lecture Deleted Successfully` });
+  res.status(StatusCodes.OK).json({ message: `Lecture Deleted Successfully` });
 });
 
-module.exports = { getLectures, uploadLecture, getSingleLecture, editLecture, deletetLecture };
+module.exports = {
+  getLectures,
+  uploadLecture,
+  getSingleLecture,
+  editLecture,
+  deletetLecture,
+};

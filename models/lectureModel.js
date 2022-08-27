@@ -21,6 +21,10 @@ const lectureSchema = mongoose.Schema({
         type : [String],
         required : [true, "Please provide a appropriate lecture tag"]
     },
+    lectureId: {
+        type : String,
+        required : [true, "Please provide a appropriate lecture Id"]
+    },
 
 })
 
