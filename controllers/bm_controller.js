@@ -27,7 +27,7 @@ const uploadLecture = asyncHandler(async (req, res) => {
   const uploadedLecture = await Lecture.create({
     title,
     src,
-    tags: [tags],
+    tags: tags,
     language,
     artist,
   });
